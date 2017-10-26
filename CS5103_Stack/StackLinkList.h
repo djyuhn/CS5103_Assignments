@@ -4,10 +4,11 @@
 * 10/26/17
 * Assignment 1
 ******************************************************************************/
-#include <iostream>
 
 #ifndef STACKLINKLIST_H
 #define STACKLINKLIST_H
+
+#include <iostream>
 
 template<class T>
 class StackLinkList {
