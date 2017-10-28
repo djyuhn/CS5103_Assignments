@@ -8,7 +8,6 @@
 #include <iostream>
 #include "StackLinkList.h"
 
-
 void tryPop(StackLinkList<int>& list);
 void tryTop(StackLinkList<int>& list);
 

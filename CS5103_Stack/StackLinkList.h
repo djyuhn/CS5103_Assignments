@@ -8,8 +8,6 @@
 #ifndef STACKLINKLIST_H
 #define STACKLINKLIST_H
 
-#include <iostream>
-
 template<class T>
 class StackLinkList {
 
