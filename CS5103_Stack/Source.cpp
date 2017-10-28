@@ -8,28 +8,46 @@
 #include <iostream>
 #include "StackLinkList.h"
 
+
+void tryPop(StackLinkList<int>& list);
+void tryTop(StackLinkList<int>& list);
+
 int main() {
 	
 	// Testing the implementation of Stack using Linked List
 	StackLinkList<int> theStack;
-	int theTop;
 
 	theStack.push(1);
 	theStack.push(2);
-	theStack.push(3);
-	theStack.push(4);
 
-	std::cout << theStack.getTop() << " is the top most item in the Stack.\n";
+	tryPop(theStack);
+	tryTop(theStack);
 
-	theStack.pop();
-
-	std::cout << theStack.getTop() << " is now the top most item.\n";
-
-	theStack.pop();
-
-	std::cout << theStack.getTop() << " is now the top most item.\n";
-
+	tryPop(theStack);
+	tryPop(theStack);
 
 	system("Pause");
 	return 0;
+}
+
+// Try to pop the top item from the Stack.
+void tryPop(StackLinkList<int>& list)
+{
+	try {
+		std::cout << list.pop() << " was removed from the stack.\n";
+	}
+	catch (std::out_of_range ex) {
+		std::cout << ex.what() << std::endl;
+	}
+}
+
+// Try to view the top item of the stack.
+void tryTop(StackLinkList<int>& list)
+{
+	try {
+		std::cout << list.getTop() << " is at the top of the Stack.\n";
+	}
+	catch (std::out_of_range ex) {
+		std::cout << ex.what() << std::endl;
+	}
 }
