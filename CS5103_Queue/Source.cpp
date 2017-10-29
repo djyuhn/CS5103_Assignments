@@ -21,6 +21,9 @@ int main() {
 	tryPop(theQueue);
 	tryFront(theQueue);
 
+	tryFront(theQueue);
+	tryPop(theQueue);
+
 	tryPop(theQueue);
 
 	system("Pause");

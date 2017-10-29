@@ -51,12 +51,8 @@ private:
 
 template<class T>
 QueueLinkList<T>::QueueLinkList(const QueueLinkList &obj) {
-	if (obj.front == nullptr)
-		this->front = nullptr;
-
-	// Perform deep copy
-	else
-		this->deepCopy(obj)
+	if (obj.front != nullptr)
+		this->deepCopy(obj);
 };
 
 template<class T>
@@ -155,6 +151,8 @@ void QueueLinkList<T>::deepCopy(const QueueLinkList& obj) {
 		p1 = p1->next;
 		o1 = o1->next;
 	}
+
+	this->back = p1;
 }
 ;
 
