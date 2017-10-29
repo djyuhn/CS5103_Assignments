@@ -87,7 +87,7 @@ void QueueLinkList<T>::push(T value) {
 		back = temp;
 	}
 
-	// Have temp next pointer point to back. Assign back to temp.
+	// Have back next pointer point to temp. Assign back to temp.
 	else {
 		back->next = temp;
 		back = temp;
