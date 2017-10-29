@@ -116,7 +116,7 @@ T QueueLinkList<T>::pop() {
 
 		return data;
 	}
-}
+};
 
 template<class T>
 void QueueLinkList<T>::deleteList() {
@@ -132,7 +132,7 @@ void QueueLinkList<T>::deleteList() {
 
 	back = nullptr;
 	temp = nullptr;
-}
+};
 
 template<class T>
 void QueueLinkList<T>::deepCopy(const QueueLinkList& obj) {
@@ -148,13 +148,12 @@ void QueueLinkList<T>::deepCopy(const QueueLinkList& obj) {
 	while (o1 != nullptr) {
 		p1->next = new Node;
 		p1->next->data = o1->data;
+
+		this->back = p1;
 		p1 = p1->next;
 		o1 = o1->next;
 	}
-
-	this->back = p1;
-}
-;
+};
 
 
 #endif
