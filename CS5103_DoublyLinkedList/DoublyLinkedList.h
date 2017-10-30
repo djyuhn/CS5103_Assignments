@@ -19,15 +19,18 @@ public:
 
 	DoublyLinkedList& operator=(const DoublyLinkedList& rhs);
 
-	void getNodeNum() const { return numNode; }
+	// Returns number of nodes in the list
+	int getSize() const { return numNode; }
 
 	// Add new nodes
-	void insertTail(T value);
-	void insertHead(T value);
+	void pushFront(T value);
+	void pushBack(T value);
 	void insertAt(T value, int pos);
 
-	// Remove the node from the front of the list
-	T pop();
+	// Remove nodes
+	T deleteFront();
+	T deleteBack();
+	T deleteAt(int pos);
 
 	// Check if the linked list is empty
 	bool isEmpty() const { return front == nullptr; }
@@ -67,10 +70,35 @@ DoublyLinkedList<T>& DoublyLinkedList<T>::operator=(const DoublyLinkedList& rhs)
 	}
 
 	return *this;
-}
+};
 
+// Adds data to the head of the list
 template<class T>
-void DoublyLinkedList<T>::insertTail(T value) {
+void DoublyLinkedList<T>::pushFront(T value){
+	// Create new node and insert the value into data
+	Node *temp = new Node;
+	temp->data = value;
+
+	// If list is empty point front and back to temp
+	if (isEmpty()) {
+		front = temp;
+		back = temp;
+	}
+
+	// Have temp next pointer point to front, front prev point to temp
+	else {
+		temp->next = front;
+		front->prev = temp;
+		front = temp;
+	}
+
+	// Increment number of nodes
+	numNode++;
+};
+
+// Adds data to the tail of the list
+template<class T>
+void DoublyLinkedList<T>::pushBack(T value) {
 	// Create new node and insert the value into data
 	Node *temp = new Node;
 	temp->data = value;
@@ -92,57 +120,54 @@ void DoublyLinkedList<T>::insertTail(T value) {
 	numNode++;
 };
 
-template<class T>
-void DoublyLinkedList<T>::insertHead(T value){
-	// Create new node and insert the value into data
-	Node *temp = new Node;
-	temp->data = value;
-
-	// If list is empty point front and back to temp
-	if (isEmpty()) {
-		front = temp;
-		back = temp;
-	}
-
-	// Have temp next pointer point to front, front prev point to temp
-	else {
-		temp->next = front;
-		front->prev = temp;
-		front = temp;
-	}
-
-	// Increment number of nodes
-	numNode++;
-}
-
+// Inserts data at the position. (Indexing begins at 0)
 template<class T>
 void DoublyLinkedList<T>::insertAt(T value, int pos) {
-	Node *temp = front;
-	Node *temp2 = nullptr;
-	Node *newNode = new Node;
-	newNode->data = value;
+	// Insure valid number. Must be positive
+	if (pos < 0)
+		throw std::out_of_range("Negative integer entered.");
 
-	if (pos <= getNodeNum()) {
+	// If index is 0, push to front
+	else if (pos == 0)
+		pushFront(value);
+
+	else if (pos <= getSize()) {
+		Node *before = front;
+		Node *after = nullptr;
+		Node *newNode = new Node;
+		newNode->data = value;
+
 		// Traverse list until node before desired position.
-		for (int i = 0; i < (pos - 1); i++) {
-			temp = temp->next
+		for (int i = 0; i < (pos - 1); i++)
+			before = before->next;
+
+		if (before != nullptr) {
+			after = before->next; // Hold the next node
+			newNode->prev = before; // Assign newNode prev pointer to the before
+			newNode->next = after; // Assign newNode next pointer to after
+			before->next = newNode; // Assign before next pointer to the new node
+
+			if (after != nullptr)
+				after->prev = newNode; // Assign after previous pointer to the new node
+			else
+				back = newNode; // End of the list
+
+			numNode++;
 		}
 
-		temp2 = temp->next; // Hold the next node
-		newNode->prev = temp; // Assign newNode prev pointer to temp
-		newNode->next = temp2; // Assign newNode next pointer to temp2
-		temp->next = newNode; // Assign temp next pointer to the new node
-		temp2->prev = newNode; // Assign temp2 prev pointer to the new node
-
+		else {
+			front = newNode;
+			back = newNode;
+		}
 	}
 
 	else
 		throw std::out_of_range("Inserting outside range of the list.");
-
 };
 
+// Deletes data at front of list and returns the value
 template<class T>
-T DoublyLinkedList<T>::pop() {
+T DoublyLinkedList<T>::deleteFront() {
 	// Check to see if list is empty and throw exception if true
 	if (isEmpty())
 		throw std::out_of_range("List is empty.");
@@ -152,16 +177,100 @@ T DoublyLinkedList<T>::pop() {
 		Node *temp = front;
 		front = temp->next;
 
+		// If front is now a nullptr, insure back is nullptr
+		if (front == nullptr)
+			back = nullptr;
+		else
+			front->prev = nullptr;
+
 		T data = temp->data;
 
 		delete temp;
 		temp = nullptr;
 
-		// If front is now a nullptr, insure back is nullptr
-		if (front == nullptr)
-			back = nullptr;
+		numNode--; // Decrement number of nodes
 
 		return data;
+	}
+};
+
+// Deletes data at back of list and returns the value
+template<class T>
+T DoublyLinkedList<T>::deleteBack() {
+	// Check to see if list is empty and throw exception if true
+	if (isEmpty())
+		throw std::out_of_range("List is empty.");
+
+	// If list is not empty, delete the back node and return its value
+	else {
+		Node *temp = back;
+		back = temp->prev;
+
+		// If back is now a nullptr, insure front is nullptr
+		if (back == nullptr)
+			front = nullptr;
+		else
+			back->next = nullptr;
+
+		T data = temp->data;
+
+		delete temp;
+		temp = nullptr;
+
+		numNode--; // Decrement number of nodes
+
+		return data;
+	}
+};
+
+// Deletes data at the specified position and returns the value
+template<class T>
+T DoublyLinkedList<T>::deleteAt(int pos)
+{
+	// Check to see if list is empty and throw exception if true
+	if (isEmpty())
+		throw std::out_of_range("List is empty.");
+
+	// If position is 0 delete front
+	else if (pos == 0)
+		return deleteFront();
+
+	// If list is not empty attempt search
+	else {
+		Node *search = front;
+		Node *temp1 = nullptr;
+		Node *temp2 = nullptr;
+
+		// If position is less than or equal to total number of nodes, search
+		if (pos <= getSize()) {
+			for (int i = 0; i < pos; i++)
+				search = search->next;
+
+			T data = search->data;
+
+			temp1 = search->prev;
+			temp2 = search->next;
+
+			if (temp1 != nullptr && temp2 != nullptr) {
+				temp1->next = temp2;
+				temp2->prev = temp1;
+			}
+			else if (temp1 != nullptr && temp2 == nullptr) {
+				temp1->next = nullptr;
+			}
+			else if (temp1 == nullptr && temp2 != nullptr) {
+				temp2->prev = nullptr;
+			}
+
+			delete search;
+			numNode--;
+
+			return data;
+
+		}
+
+		else
+			throw std::out_of_range("Deleting outside range of the list");
 	}
 };
 
