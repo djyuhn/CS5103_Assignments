@@ -243,7 +243,7 @@ T DoublyLinkedList<T>::deleteAt(int pos)
 		Node *temp2 = nullptr;
 
 		// If position is less than or equal to total number of nodes, search
-		if (pos <= getSize()) {
+		if (pos <= getSize() && pos > 0) {
 			for (int i = 0; i < pos; i++)
 				search = search->next;
 
