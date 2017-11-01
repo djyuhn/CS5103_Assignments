@@ -158,6 +158,7 @@ void DoublyLinkedList<T>::insertAt(T value, int pos) {
 		else {
 			front = newNode;
 			back = newNode;
+			numNode++;
 		}
 	}
 
