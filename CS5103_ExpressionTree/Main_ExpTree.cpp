@@ -23,6 +23,8 @@ void preorder(node * leaf);
 void inorder(node * leaf);
 void postorder(node * leaf);
 std::string shuntingYard(std::string rpnExpr);
+node* createTree(std::stack<node*> stack, std::string rpnExpr);
+void destroyTree(node* leaf);
 
 int main() {
 	std::string expr = "(a + b * c) + ((d * e + f) * g)";
@@ -31,33 +33,19 @@ int main() {
 
 	std::string rpnExpr = shuntingYard(expr);
 
-	for (int i = 0; i < rpnExpr.size(); i++) {
-		if (!isOperator(rpnExpr[i])) {
-			node *newNode = new node;
-			newNode->data = rpnExpr[i];
-			treeStack.push(newNode);
-		}
-
-		else if (isOperator(rpnExpr[i])) {
-			node *newNode = new node;
-			newNode->data = rpnExpr[i];
-			newNode->right = treeStack.top();
-			treeStack.pop();
-			newNode->left = treeStack.top();
-			treeStack.pop();
-			treeStack.push(newNode);
-		}
-	}
+	node* root = createTree(treeStack, rpnExpr);
 	
 	std::cout << "Original Expression:\n" << expr 
 		<< "\nParentheses are removed in the output below.\n\n";
 	std::cout << "Preorder:" << std::endl;
-	preorder(treeStack.top());
+	preorder(root);
 	std::cout << "\n\nInorder:" << std::endl;
-	inorder(treeStack.top());
+	inorder(root);
 	std::cout << "\n\nPostorder:" << std::endl;
-	postorder(treeStack.top());
+	postorder(root);
 	std::cout << "\n\n";
+
+	destroyTree(root);
 
 	return 0;
 }
@@ -175,3 +163,34 @@ std::string shuntingYard(std::string expr) {
 	return outputString;
 
 }
+
+node * createTree(std::stack<node*> stack, std::string rpnExpr) {
+	
+	for (int i = 0; i < rpnExpr.size(); i++) {
+		if (!isOperator(rpnExpr[i])) {
+			node *newNode = new node;
+			newNode->data = rpnExpr[i];
+			stack.push(newNode);
+		}
+
+		else if (isOperator(rpnExpr[i])) {
+			node *newNode = new node;
+			newNode->data = rpnExpr[i];
+			newNode->right = stack.top();
+			stack.pop();
+			newNode->left = stack.top();
+			stack.pop();
+			stack.push(newNode);
+		}
+	}
+
+	return stack.top();
+}
+
+void destroyTree(node* leaf) {
+	if (leaf != nullptr) {
+		destroyTree(leaf->left);
+		destroyTree(leaf->right);
+		delete leaf;
+	}
+};
