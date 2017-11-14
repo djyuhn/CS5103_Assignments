@@ -164,3 +164,18 @@ inline node * AVL<T>::rotateRight(node *& leaf) {
 
 	return temp;
 }
+
+/**
+Rotates a branch to the right and then the left.
+
+@param leaf Pointer of type node to a leaf.
+@return Pointer to the elevated leaf's right node's left branch.
+*/
+template<class T>
+inline node * AVL<T>::rotateRightLeft(node *& leaf)
+{
+	node* temp = leaf->right;
+	leaf->right = rotateRight(temp);
+
+	return rotateLeft(leaf);
+}
