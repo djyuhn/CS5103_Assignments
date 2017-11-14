@@ -147,3 +147,20 @@ inline node * AVL<T>::rotateLeft(node *& leaf) {
 
 	return temp;
 }
+
+/**
+Rotates a branch to the right to balance and updates the height of the node.
+
+@param leaf Pointer of type node to a leaf.
+@return temp Pointer to the elevated left node that is now above the original leaf
+*/
+template<class T>
+inline node * AVL<T>::rotateRight(node *& leaf) {
+	node* temp = leaf->left;
+	leaf->left = temp->right;
+	temp->right = leaf;
+
+	leaf->updateHeight();
+
+	return temp;
+}
