@@ -111,6 +111,29 @@ inline void AVL<T>::destroyTree(node *& leaf) {
 };
 
 /**
+Checks each node's left and right branches. Determines if they are unbalanced.
+If the branches are unbalanced, they are rotated upwards until the heights are equal.
+
+@paramm leaf Pointer of type node to a leaf.
+*/
+template<class T>
+inline void AVL<T>::rebalance(node *& leaf) {
+	int heightDiff = getDiff(leaf);
+	if (heightDiff > 1) {
+		if (getDiff(leaf->left) > 0)
+			leaf = rotateRight(leaf);
+		else
+			leaf = rotateLeftRight(leaf);
+	}
+	else if (heightDiff < -1) {
+		if (getDiff(leaf->right) < 0)
+			leaf = rotateLeft(leaf);
+		else
+			leaf = rotateRightLeft(leaf);
+	}
+}
+
+/**
 Get the difference of the node's left and right branch heights.
 If it is positive, the left side is greater. Else the right side is greater.
 
@@ -170,8 +193,7 @@ Rotates a branch to the right and then the left.
 @return Pointer to the elevated leaf's right node's left branch.
 */
 template<class T>
-typename AVL<T>:: node * AVL<T>::rotateRightLeft(node *& leaf)
-{
+typename AVL<T>:: node * AVL<T>::rotateRightLeft(node *& leaf) {
 	node* temp = leaf->right;
 	leaf->right = rotateRight(temp);
 
@@ -185,8 +207,7 @@ Rotates a branch to the left and then the right.
 @return Pointer to the elevated leaf's left node's right branch.
 */
 template<class T>
-typename AVL<T>:: node * AVL<T>::rotateLeftRight(node *& leaf)
-{
+typename AVL<T>:: node * AVL<T>::rotateLeftRight(node *& leaf) {
 	node* temp = leaf->left;
 	leaf->left = rotateLeft(temp);
 
