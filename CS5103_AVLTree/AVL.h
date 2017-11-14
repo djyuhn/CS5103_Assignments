@@ -38,12 +38,12 @@ private:
 	void insert(T data, node* leaf);
 	void destroyTree(node*& leaf);
 
+	void rebalance(node*& leaf);
 	int getDiff(node* leaf);
 	node* rotateLeft(node*& leaf);
 	node* rotateRight(node*& leaf);
 	node* rotateRightLeft(node*& leaf);
 	node* rotateLeftRight(node*& leaf);
-	void rebalance(node*& leaf);
 };
 
 #endif // !AVL_H
@@ -110,4 +110,23 @@ inline void AVL<T>::destroyTree(node *& leaf) {
 		destroyTree(leaf->right);
 		delete leaf;
 	}
+}
+
+/**
+Get the difference of the node's left and right branch heights.
+If it is positive, the left side is greater. Else the right side is greater.
+
+@param leaf Pointer of type node to a leaf.
+*/
+template<class T>
+inline int AVL<T>::getDiff(node * leaf) {
+	int leftH = 0;
+	int rightH = 0;
+
+	if (left != nullptr)
+		leftH = left->height;
+	if (right != nullptr)
+		rightH = right->height;
+
+	return leftH - rightH;
 }
