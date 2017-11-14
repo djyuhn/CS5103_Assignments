@@ -130,3 +130,20 @@ inline int AVL<T>::getDiff(node * leaf) {
 
 	return leftH - rightH;
 }
+
+/**
+Rotates a branch to the left to balance and updates the height of the node.
+
+@param leaf Pointer of type node to a leaf.
+@return temp Pointer to the elevated right node that is now above the original leaf
+*/
+template<class T>
+inline node * AVL<T>::rotateLeft(node *& leaf) {
+	node* temp = leaf->right;
+	leaf->right = temp->left;
+	temp->left = leaf;
+
+	leaf->updateHeight();
+
+	return temp;
+}
