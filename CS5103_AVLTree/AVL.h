@@ -14,7 +14,7 @@ public:
 	AVL() { root = nullptr; }
 	~AVL() { destroyTree(); }
 
-	void insert(T val) { insert(val, root); }
+	void insert(T value) { insert(value, root); }
 
 private:
 	struct node {
@@ -49,7 +49,7 @@ private:
 #endif // !AVL_H
 
 /**
-Updates the node height when called. Use when inserting or deleteing nodes.
+Updates the node height when called. Use when inserting or deleting nodes.
 */
 template<class T>
 inline void AVL<T>::node::updateHeight() {
@@ -68,4 +68,31 @@ inline void AVL<T>::node::updateHeight() {
 		max = rightH;
 
 	height = max + 1;
+}
+
+/**
+Inserts the value into the AVL. Update the height of the node and rebalance.
+
+@param value The value of the data in the node.
+@param leaf Pointer of type node to a leaf.
+*/
+template<class T>
+inline void AVL<T>::insert(T value, node * leaf) {
+	if (leaf == nullptr) {
+		leaf = new node(value);
+		leaf->updateHeight();
+	}
+
+	else {
+		if (value < leaf->data) {
+			insert(value, leaf->left);
+			leaf->updateHeight();
+			rebalance(leaf);
+		}
+		else {
+			insert(value, leaf->right);
+			leaf->updateHeight();
+			rebalance(leaf);
+		}
+	}
 }
