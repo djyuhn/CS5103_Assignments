@@ -1,5 +1,6 @@
 /**
 CS5103 - Assignment 2 AVL Tree
+AVL.h
 
 @author DJ Yuhn
 */
@@ -11,7 +12,7 @@ template <class T>
 class AVL {
 public:
 	AVL() { root = nullptr; }
-	~AVL();
+	~AVL() { destroyTree(); }
 
 	void insert(T val) { insert(val, root); }
 
@@ -28,7 +29,7 @@ private:
 			right = nullptr;
 			height = 0;
 		}
-
+		
 		void updateHeight();
 	};
 
@@ -46,3 +47,25 @@ private:
 };
 
 #endif // !AVL_H
+
+/**
+Updates the node height when called. Use when inserting or deleteing nodes.
+*/
+template<class T>
+inline void AVL<T>::node::updateHeight() {
+	int leftH = 0;
+	int rightH = 0;
+	int max;
+
+	if (left != nullptr)
+		leftH = left->height;
+	if (right != nullptr)
+		rightH = right->height;
+
+	if (leftH > rightH)
+		max = leftH;
+	else
+		max = rightH;
+
+	height = max + 1;
+}
