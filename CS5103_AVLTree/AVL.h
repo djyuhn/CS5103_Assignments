@@ -46,13 +46,11 @@ private:
 	node* rotateLeftRight(node*& leaf);
 };
 
-#endif // !AVL_H
-
 /**
 Updates the node height when called. Use when inserting or deleting nodes.
 */
 template<class T>
-inline void AVL<T>::node::updateHeight() {
+void AVL<T>::node::updateHeight() {
 	int leftH = 0;
 	int rightH = 0;
 	int max;
@@ -68,7 +66,7 @@ inline void AVL<T>::node::updateHeight() {
 		max = rightH;
 
 	height = max + 1;
-}
+};
 
 /**
 Inserts the value into the AVL. Update the height of the node and rebalance.
@@ -77,7 +75,7 @@ Inserts the value into the AVL. Update the height of the node and rebalance.
 @param leaf Pointer of type node to a leaf.
 */
 template<class T>
-inline void AVL<T>::insert(T value, node * leaf) {
+void AVL<T>::insert(T value, node * leaf) {
 	if (leaf == nullptr) {
 		leaf = new node(value);
 		leaf->updateHeight();
@@ -95,7 +93,7 @@ inline void AVL<T>::insert(T value, node * leaf) {
 			rebalance(leaf);
 		}
 	}
-}
+};
 
 
 /**
@@ -110,7 +108,7 @@ inline void AVL<T>::destroyTree(node *& leaf) {
 		destroyTree(leaf->right);
 		delete leaf;
 	}
-}
+};
 
 /**
 Get the difference of the node's left and right branch heights.
@@ -129,7 +127,7 @@ inline int AVL<T>::getDiff(node * leaf) {
 		rightH = right->height;
 
 	return leftH - rightH;
-}
+};
 
 /**
 Rotates a branch to the left to balance and updates the height of the node.
@@ -138,7 +136,7 @@ Rotates a branch to the left to balance and updates the height of the node.
 @return temp Pointer to the elevated right node that is now above the original leaf
 */
 template<class T>
-inline node * AVL<T>::rotateLeft(node *& leaf) {
+typename AVL<T>:: node * AVL<T>::rotateLeft(node *& leaf) {
 	node* temp = leaf->right;
 	leaf->right = temp->left;
 	temp->left = leaf;
@@ -146,7 +144,7 @@ inline node * AVL<T>::rotateLeft(node *& leaf) {
 	leaf->updateHeight();
 
 	return temp;
-}
+};
 
 /**
 Rotates a branch to the right to balance and updates the height of the node.
@@ -155,7 +153,7 @@ Rotates a branch to the right to balance and updates the height of the node.
 @return temp Pointer to the elevated left node that is now above the original leaf
 */
 template<class T>
-inline node * AVL<T>::rotateRight(node *& leaf) {
+typename AVL<T>:: node * AVL<T>::rotateRight(node *& leaf) {
 	node* temp = leaf->left;
 	leaf->left = temp->right;
 	temp->right = leaf;
@@ -163,7 +161,7 @@ inline node * AVL<T>::rotateRight(node *& leaf) {
 	leaf->updateHeight();
 
 	return temp;
-}
+};
 
 /**
 Rotates a branch to the right and then the left.
@@ -172,13 +170,13 @@ Rotates a branch to the right and then the left.
 @return Pointer to the elevated leaf's right node's left branch.
 */
 template<class T>
-inline node * AVL<T>::rotateRightLeft(node *& leaf)
+typename AVL<T>:: node * AVL<T>::rotateRightLeft(node *& leaf)
 {
 	node* temp = leaf->right;
 	leaf->right = rotateRight(temp);
 
 	return rotateLeft(leaf);
-}
+};
 
 /**
 Rotates a branch to the left and then the right.
@@ -187,10 +185,12 @@ Rotates a branch to the left and then the right.
 @return Pointer to the elevated leaf's left node's right branch.
 */
 template<class T>
-inline node * AVL<T>::rotateLeftRight(node *& leaf)
+typename AVL<T>:: node * AVL<T>::rotateLeftRight(node *& leaf)
 {
 	node* temp = leaf->left;
 	leaf->left = rotateLeft(temp);
 
 	return rotateRight(leaf);
-}
+};
+
+#endif
