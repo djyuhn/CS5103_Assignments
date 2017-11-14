@@ -96,3 +96,18 @@ inline void AVL<T>::insert(T value, node * leaf) {
 		}
 	}
 }
+
+
+/**
+Recursively deletes the nodes of the AVL tree
+
+@param leaf Pointer of type node to a leaf.
+*/
+template<class T>
+inline void AVL<T>::destroyTree(node *& leaf) {
+	if (leaf != nullptr) {
+		destroyTree(leaf->left);
+		destroyTree(leaf->right);
+		delete leaf;
+	}
+}
