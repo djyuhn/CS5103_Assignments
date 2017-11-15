@@ -1,7 +1,7 @@
 /**
-	CS5103 - Assignment 2 Expression Tree
+CS5103 - Assignment 2 Expression Tree
 
-	@author DJ Yuhn
+@author DJ Yuhn
 */
 
 #include <iostream>
@@ -89,9 +89,9 @@ std::string shuntingYard(std::string expr) {
 
 	std::map<char, int> opPriority;
 	opPriority['+'] = 10;
-	opPriority['-'] - 10;
+	opPriority['-'] = 10;
 	opPriority['*'] = 20;
-	opPriority['/'] - 20;
+	opPriority['/'] = 20;
 
 	// Remove whitespace from the expression
 	expr.erase(std::remove_if(expr.begin(), expr.end(), isspace), expr.end());
