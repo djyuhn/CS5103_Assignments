@@ -12,7 +12,7 @@ template <class T>
 class AVL {
 public:
 	AVL() { root = nullptr; }
-	~AVL() { destroyTree(); }
+	~AVL() { destroyTree(root); }
 
 	void insert(T value) { insert(value, root); }
 
@@ -23,8 +23,8 @@ private:
 		node* right;
 		int height;
 
-		node(T data) {
-			data = data;
+		node(T val) {
+			data = val;
 			left = nullptr;
 			right = nullptr;
 			height = 0;
@@ -35,11 +35,11 @@ private:
 
 	node* root;
 
-	void insert(T data, node* leaf);
+	void insert(T data, node*& leaf);
 	void destroyTree(node*& leaf);
 
 	void rebalance(node*& leaf);
-	int getDiff(node* leaf);
+	int getDiff(node*& leaf);
 	node* rotateLeft(node*& leaf);
 	node* rotateRight(node*& leaf);
 	node* rotateRightLeft(node*& leaf);
@@ -53,7 +53,7 @@ template<class T>
 void AVL<T>::node::updateHeight() {
 	int leftH = 0;
 	int rightH = 0;
-	int max;
+	int max = 0;
 
 	if (left != nullptr)
 		leftH = left->height;
@@ -75,7 +75,7 @@ Inserts the value into the AVL. Update the height of the node and rebalance.
 @param leaf Pointer of type node to a leaf.
 */
 template<class T>
-void AVL<T>::insert(T value, node * leaf) {
+void AVL<T>::insert(T value, node *& leaf) {
 	if (leaf == nullptr) {
 		leaf = new node(value);
 		leaf->updateHeight();
@@ -140,14 +140,14 @@ If it is positive, the left side is greater. Else the right side is greater.
 @param leaf Pointer of type node to a leaf.
 */
 template<class T>
-inline int AVL<T>::getDiff(node * leaf) {
+inline int AVL<T>::getDiff(node *& leaf) {
 	int leftH = 0;
 	int rightH = 0;
 
-	if (left != nullptr)
-		leftH = left->height;
-	if (right != nullptr)
-		rightH = right->height;
+	if (leaf->left != nullptr)
+		leftH = leaf->left->height;
+	if (leaf->right != nullptr)
+		rightH = leaf->right->height;
 
 	return leftH - rightH;
 };
