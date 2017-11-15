@@ -15,6 +15,8 @@ public:
 	~AVL() { destroyTree(root); }
 
 	void insert(T value) { insert(value, root); }
+	void inorder() { inorder(root); }
+	int getTreeHeight() const { return root->height - 1; }
 
 private:
 	struct node {
@@ -44,6 +46,8 @@ private:
 	node* rotateRight(node*& leaf);
 	node* rotateRightLeft(node*& leaf);
 	node* rotateLeftRight(node*& leaf);
+
+	void inorder(node * leaf);
 };
 
 /**
@@ -93,6 +97,8 @@ void AVL<T>::insert(T value, node *& leaf) {
 			rebalance(leaf);
 		}
 	}
+
+	leaf->updateHeight();
 };
 
 
@@ -166,6 +172,11 @@ typename AVL<T>:: node * AVL<T>::rotateLeft(node *& leaf) {
 
 	leaf->updateHeight();
 
+	std::cout << "\n\tThe node containing " << temp->data
+		<< " and its right branch were rotated left. \n\tThe node containing "
+		<< leaf->data << " and its left branch are now " << temp->data
+		<< " node's left branch.";
+
 	return temp;
 };
 
@@ -180,6 +191,11 @@ typename AVL<T>:: node * AVL<T>::rotateRight(node *& leaf) {
 	node* temp = leaf->left;
 	leaf->left = temp->right;
 	temp->right = leaf;
+
+	std::cout << "\n\tThe node containing " << temp->data
+		<< " and its left branch were rotated right. \n\tThe node containing "
+		<< leaf->data << " and its right branch are now " << temp->data
+		<< " node's right branch.";
 
 	leaf->updateHeight();
 
@@ -212,6 +228,23 @@ typename AVL<T>:: node * AVL<T>::rotateLeftRight(node *& leaf) {
 	leaf->left = rotateLeft(temp);
 
 	return rotateRight(leaf);
+}
+
+/**
+Traverses the tree inorder, outputting contents of each node.
+
+@param leaf Pointer of type node to a leaf.
+*/
+template<class T>
+void AVL<T>::inorder(node * leaf) {
+	if (root == nullptr)
+		std::cout << "Tree is empty" << std::endl;
+
+	else if (leaf != nullptr) {
+		inorder(leaf->left);
+		std::cout << leaf->data << " ";
+		inorder(leaf->right);
+	}
 };
 
 #endif

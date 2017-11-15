@@ -10,18 +10,31 @@ AVLTree_Main.cpp
 
 int main() {
 	AVL<int> tree;
+	int arr[] = { 9,27,50,15,2,21,18,32,44,28,36 }; //Sequence of numbers given
 
-	tree.insert(9);
-	tree.insert(27);
-	tree.insert(50);
-	tree.insert(15);
-	tree.insert(2);
-	tree.insert(21);
-	tree.insert(18);
-	tree.insert(32);
-	tree.insert(44);
-	tree.insert(28);
-	tree.insert(36);
+
+	for (int i = 0; i < 11; i++) {
+		if (i == 0) {
+			std::cout << arr[i] << " was inserted into the tree." << std::endl;
+			tree.insert(arr[i]);
+			std::cout << "The following is the tree's data inorder:" 
+				<< std::endl;
+			
+			tree.inorder();
+			std::cout << "\nThe height of the tree is: " 
+				<< tree.getTreeHeight() << std::endl;
+		}
+		else {
+			std::cout << "\n\n" << arr[i] << " was inserted into the tree.";
+			tree.insert(arr[i]);
+			std::cout << "\nThe following is the tree's data inorder after any necessary rotations:" 
+				<< std::endl;
+			
+			tree.inorder();
+			std::cout << "\nThe height of the tree is: "
+				<< tree.getTreeHeight() << std::endl;
+		}
+	}
 
 	return 0;
 };
